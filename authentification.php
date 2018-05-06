@@ -3,32 +3,27 @@
 
 <?php
 if (!empty($_REQUEST['password']) and !empty($_REQUEST['login'])) {
-    //Пишем логин и пароль из формы в переменные (для удобства работы):
+
     $login = $_REQUEST['login'];
     $password = $_REQUEST['password'];
     $hash = md5($password);
-    /*
-        Формируем и отсылаем SQL запрос:
-        ВЫБРАТЬ ИЗ таблицы_users ГДЕ поле_логин = $login И поле_пароль = $password.
-    */
+
     $query = 'SELECT * FROM users WHERE login="' . $login . '" AND password="' . $hash . '"';
-    $result = mysqli_query($link, $query); //ответ базы запишем в переменную $result
-    $user = mysqli_fetch_assoc($result); //преобразуем ответ из БД в нормальный массив PHP
-    //Если база данных вернула не пустой ответ - значит пара логин-пароль правильная
+    $result = mysqli_query($link, $query); 
+    $user = mysqli_fetch_assoc($result);
+
     if (!empty($user)) {
         //Пользователь прошел авторизацию, выполним какой-то код.
         session_start();
         $_SESSION['auth'] = true;
         require('admin.php');
         exit();
-        /*
-            Пишем в сессию логин и id пользователя (их мы берем из переменной $user!):
-        */
+  
         $_SESSION['id'] = $user['id'];
         $_SESSION['login'] = $user['login'];
     } else {
         echo 'чет не так';
-        //Пользователь неверно ввел логин или пароль, выполним какой-то код.
+
     }
 }
 ?>
