@@ -13,7 +13,7 @@ if (!empty($_REQUEST['password']) and !empty($_REQUEST['login'])) {
     $user = mysqli_fetch_assoc($result);
 
     if (!empty($user)) {
-        //Пользователь прошел авторизацию, выполним какой-то код.
+
         session_start();
         $_SESSION['auth'] = true;
         require('admin.php');
